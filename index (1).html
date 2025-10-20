@@ -1,0 +1,1364 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JaiDeeClear - UV Protection Film Quote</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background-color: #ffffff;
+            color: #1f2937;
+            line-height: 1.6;
+        }
+
+        /* Header */
+        header {
+            border-bottom: 1px solid #f3f4f6;
+            position: sticky;
+            top: 0;
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(12px);
+            z-index: 50;
+        }
+
+        .header-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 1rem 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo-section {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .logo-text {
+            font-size: 1.125rem;
+            font-weight: bold;
+            color: #111827;
+        }
+
+        .logo-clear {
+            background-color: #000;
+            color: white;
+            padding: 0 0.25rem;
+            margin-left: 0.25rem;
+        }
+
+        .logo-subtitle {
+            font-size: 0.75rem;
+            color: #374151;
+            font-weight: 500;
+            letter-spacing: 0.1em;
+        }
+
+        .price-badge {
+            font-size: 0.875rem;
+            color: #ff8c00;
+            font-weight: 600;
+        }
+
+        /* Main Container */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 3rem 1.5rem;
+        }
+
+        /* Progress Bar */
+        .progress-bar {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 3rem;
+        }
+
+        .progress-segment {
+            height: 4px;
+            flex: 1;
+            border-radius: 9999px;
+            background-color: #e5e7eb;
+            transition: all 0.3s ease;
+        }
+
+        .progress-segment.active {
+            background-color: #ff8c00;
+        }
+
+        /* Step Content */
+        .step {
+            display: none;
+        }
+
+        .step.active {
+            display: block;
+        }
+
+        /* Headings */
+        h1 {
+            font-size: 2.25rem;
+            font-weight: 300;
+            color: #111827;
+            margin-bottom: 0.5rem;
+        }
+
+        h2 {
+            font-size: 1.875rem;
+            font-weight: 300;
+            color: #111827;
+            margin-bottom: 0.5rem;
+        }
+
+        .subtitle {
+            color: #6b7280;
+            font-size: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        /* Grid */
+        .grid {
+            display: grid;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .grid-2 {
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        }
+
+        .grid-4 {
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+        }
+
+        /* Buttons */
+        .button-group {
+            display: grid;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .btn {
+            padding: 1.5rem;
+            border: 2px solid #e5e7eb;
+            border-radius: 1rem;
+            background: white;
+            cursor: pointer;
+            text-align: center;
+            transition: all 0.3s ease;
+            font-size: 1rem;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn:hover {
+            border-color: #ff8c00;
+            background-color: #fff7ed;
+        }
+
+        .btn-primary {
+            background-color: #ff8c00;
+            color: white;
+            border-color: #ff8c00;
+            width: 100%;
+            padding: 1rem;
+            font-size: 1.125rem;
+            font-weight: 600;
+            margin-top: 1rem;
+        }
+
+        .btn-primary:hover {
+            background-color: #e67e00;
+        }
+
+        .btn-primary:disabled {
+            background-color: #d1d5db;
+            cursor: not-allowed;
+            border-color: #d1d5db;
+        }
+
+        .btn-secondary {
+            border: 2px solid #ff8c00;
+            color: #ff8c00;
+            background: white;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            border-radius: 9999px;
+        }
+
+        .btn-secondary:hover {
+            background-color: #fff7ed;
+        }
+
+        /* Form Fields */
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        label {
+            display: block;
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: #374151;
+            margin-bottom: 0.5rem;
+        }
+
+        .required {
+            color: #ef4444;
+        }
+
+        input[type="text"],
+        input[type="tel"],
+        input[type="date"],
+        textarea,
+        select {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: 2px solid #e5e7eb;
+            border-radius: 0.75rem;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            font-family: inherit;
+        }
+
+        input:focus,
+        textarea:focus,
+        select:focus {
+            outline: none;
+            border-color: #ff8c00;
+        }
+
+        input.error,
+        textarea.error {
+            border-color: #ef4444;
+        }
+
+        .error-message {
+            color: #ef4444;
+            font-size: 0.875rem;
+            margin-top: 0.25rem;
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        /* Film Card */
+        .film-card {
+            padding: 1.5rem;
+            border: 2px solid #e5e7eb;
+            border-radius: 1rem;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .film-card.popular {
+            border-color: #ff8c00;
+            background-color: #fff7ed;
+        }
+
+        .film-card.popular::before {
+            content: "Most Popular";
+            position: absolute;
+            top: -12px;
+            left: 24px;
+            background-color: #ff8c00;
+            color: white;
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .film-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .film-name {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #111827;
+        }
+
+        .film-price {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #ff8c00;
+        }
+
+        .film-price-unit {
+            font-size: 0.875rem;
+            color: #6b7280;
+            font-weight: normal;
+        }
+
+        .film-warranty {
+            font-size: 0.875rem;
+            color: #6b7280;
+            margin-bottom: 1rem;
+        }
+
+        .film-detail {
+            margin-bottom: 0.75rem;
+            font-size: 0.875rem;
+        }
+
+        .film-detail-label {
+            font-weight: 600;
+            color: #374151;
+            margin-bottom: 0.25rem;
+        }
+
+        .film-specs {
+            display: flex;
+            gap: 1rem;
+            font-size: 0.75rem;
+            color: #6b7280;
+            margin: 1rem 0;
+        }
+
+        .film-buttons {
+            display: flex;
+            gap: 0.75rem;
+            margin-top: 1rem;
+        }
+
+        .film-buttons .btn {
+            flex: 1;
+            padding: 0.75rem;
+            border: none;
+        }
+
+        /* Photo Upload */
+        .upload-area {
+            border: 2px dashed #d1d5db;
+            border-radius: 0.75rem;
+            padding: 2rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .upload-area:hover {
+            border-color: #ff8c00;
+            background-color: #fff7ed;
+        }
+
+        .upload-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .upload-text {
+            font-size: 0.875rem;
+            color: #6b7280;
+            margin-bottom: 0.25rem;
+        }
+
+        .upload-hint {
+            font-size: 0.75rem;
+            color: #9ca3af;
+        }
+
+        input[type="file"] {
+            display: none;
+        }
+
+        .photo-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+            gap: 0.75rem;
+            margin-top: 1rem;
+        }
+
+        .photo-item {
+            position: relative;
+            aspect-ratio: 1;
+            overflow: hidden;
+            border-radius: 0.5rem;
+            group: 'hover';
+        }
+
+        .photo-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .photo-delete {
+            position: absolute;
+            top: 4px;
+            right: 4px;
+            background-color: #ef4444;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 24px;
+            height: 24px;
+            cursor: pointer;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .photo-item:hover .photo-delete {
+            opacity: 1;
+        }
+
+        /* Guidelines Box */
+        .guidelines-box {
+            background-color: #f9fafb;
+            border-radius: 1rem;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .guidelines-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .guideline-item {
+            text-align: center;
+        }
+
+        .guideline-label {
+            font-weight: bold;
+            color: #ff8c00;
+            margin-bottom: 0.25rem;
+        }
+
+        .guideline-text {
+            font-size: 0.875rem;
+            color: #6b7280;
+        }
+
+        /* Info Box */
+        .info-box {
+            background-color: #fef3c7;
+            border-left: 4px solid #f59e0b;
+            padding: 1rem;
+            border-radius: 0.25rem;
+            margin-bottom: 2rem;
+        }
+
+        .info-box p {
+            font-size: 0.875rem;
+            color: #92400e;
+        }
+
+        /* Estimate Box */
+        .estimate-box {
+            background: linear-gradient(to right, #ff8c00, #ffc107);
+            border-radius: 1rem;
+            padding: 2rem;
+            color: white;
+            margin-bottom: 2rem;
+        }
+
+        .estimate-header {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 1rem;
+        }
+
+        .estimate-header span {
+            font-size: 1.875rem;
+        }
+
+        .estimate-header h2 {
+            color: white;
+            margin: 0;
+        }
+
+        .estimate-amount {
+            font-size: 3rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+
+        .estimate-details {
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 0.875rem;
+        }
+
+        /* Summary Box */
+        .summary-box {
+            background-color: #f9fafb;
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .summary-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.75rem;
+            font-size: 0.875rem;
+        }
+
+        .summary-label {
+            color: #6b7280;
+        }
+
+        .summary-value {
+            font-weight: 500;
+            color: #111827;
+        }
+
+        /* Success Screen */
+        .success-container {
+            text-align: center;
+            padding: 3rem 0;
+        }
+
+        .success-icon {
+            width: 80px;
+            height: 80px;
+            background-color: #dcfce7;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1.5rem;
+            font-size: 2.5rem;
+        }
+
+        .success-title {
+            font-size: 2rem;
+            font-weight: 300;
+            color: #111827;
+            margin-bottom: 1rem;
+        }
+
+        .success-message {
+            color: #6b7280;
+            margin-bottom: 2rem;
+            max-width: 500px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .contact-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .contact-card {
+            background: white;
+            border: 2px solid #e5e7eb;
+            border-radius: 0.75rem;
+            padding: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .contact-icon {
+            font-size: 1.5rem;
+            color: #ff8c00;
+        }
+
+        .contact-text {
+            text-align: left;
+            font-weight: 500;
+            color: #111827;
+        }
+
+        /* Back Button */
+        .back-btn {
+            display: inline-flex;
+            align-items: center;
+            color: #ff8c00;
+            font-size: 0.875rem;
+            margin-bottom: 2rem;
+            background: none;
+            border: none;
+            cursor: pointer;
+            text-decoration: none;
+            gap: 0.5rem;
+        }
+
+        .back-btn:hover {
+            text-decoration: underline;
+        }
+
+        /* Footer */
+        footer {
+            border-top: 1px solid #f3f4f6;
+            margin-top: 5rem;
+        }
+
+        .footer-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 3rem 1.5rem;
+        }
+
+        .footer-badges {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+            font-size: 0.875rem;
+            color: #6b7280;
+        }
+
+        .footer-badge {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .footer-text {
+            text-align: center;
+            font-size: 0.75rem;
+            color: #9ca3af;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .container {
+                padding: 1.5rem;
+            }
+
+            h1 {
+                font-size: 1.875rem;
+            }
+
+            h2 {
+                font-size: 1.5rem;
+            }
+
+            .grid-4 {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .estimate-amount {
+                font-size: 2rem;
+            }
+
+            .header-container {
+                flex-direction: column;
+                gap: 1rem;
+                text-align: center;
+            }
+        }
+
+        /* Animations */
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .step.active {
+            animation: slideIn 0.3s ease;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="header-container">
+            <div class="logo-section">
+                <svg width="50" height="34" viewBox="0 0 240 120" style="flex-shrink: 0;">
+                    <path d="M 20 40 Q 35 20, 50 40 Q 65 60, 80 40 L 80 80 Q 65 100, 50 80 Q 35 60, 20 80 Z" fill="#f0f0f0"/>
+                    <path d="M 70 35 Q 85 15, 100 35 Q 115 55, 130 35 L 130 85 Q 115 105, 100 85 Q 85 65, 70 85 Z" fill="#d1d5db"/>
+                    <path d="M 120 30 Q 135 10, 150 30 Q 165 50, 180 30 L 180 90 Q 165 110, 150 90 Q 135 70, 120 90 Z" fill="#9ca3af"/>
+                    <path d="M 170 25 Q 185 5, 200 25 Q 215 45, 230 25 L 230 95 Q 215 115, 200 95 Q 185 75, 170 95 Z" fill="#FFA500"/>
+                </svg>
+                <div>
+                    <div class="logo-text">JAIDEE<span class="logo-clear">CLEAR</span></div>
+                    <div class="logo-subtitle">UV PROTECTION FILM</div>
+                </div>
+            </div>
+            <div class="price-badge">Starting at ฿40/sq.ft</div>
+        </div>
+    </header>
+
+    <!-- Progress Bar -->
+    <div class="container" style="padding-bottom: 0;">
+        <div class="progress-bar" id="progressBar"></div>
+    </div>
+
+    <!-- Main Container -->
+    <div class="container">
+        <!-- Step 1: Property Type Selector -->
+        <div class="step active" id="step1">
+            <h2>What type of property?</h2>
+            <p class="subtitle">This helps us recommend the best film for your needs</p>
+            <div class="grid grid-4" id="propertyTypes"></div>
+        </div>
+
+        <!-- Step 2: Focus Selector -->
+        <div class="step" id="step2">
+            <button class="back-btn" onclick="goToStep(1)">← Back</button>
+            <h2>What's your main concern?</h2>
+            <p class="subtitle">Select your primary need</p>
+            <div class="grid grid-2" id="focusOptions"></div>
+        </div>
+
+        <!-- Step 3: Film Selector -->
+        <div class="step" id="step3">
+            <button class="back-btn" onclick="goToStep(2)">← Back</button>
+            <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 2rem;">
+                <div>
+                    <h2>Choose your film</h2>
+                    <p class="subtitle">Select the protection level that fits your needs</p>
+                </div>
+                <button class="btn-secondary" onclick="toggleGuidelines()">
+                    📋 Film Guidelines
+                </button>
+            </div>
+
+            <div class="guidelines-box" id="guidelinesBox" style="display: none;">
+                <div class="guidelines-grid">
+                    <div class="guideline-item">
+                        <div class="guideline-label">VLT</div>
+                        <div class="guideline-text">Visible Light Transmit - Light passage amount</div>
+                    </div>
+                    <div class="guideline-item">
+                        <div class="guideline-label">UVR</div>
+                        <div class="guideline-text">UV Rejection - Harmful ray protection</div>
+                    </div>
+                    <div class="guideline-item">
+                        <div class="guideline-label">IRR</div>
+                        <div class="guideline-text">Infrared Rejection - Heat blocking power</div>
+                    </div>
+                    <div class="guideline-item">
+                        <div class="guideline-label">TSER</div>
+                        <div class="guideline-text">Total Solar Energy Rejection - Overall heat control</div>
+                    </div>
+                </div>
+                <div style="padding-top: 1rem; border-top: 1px solid #e5e7eb;">
+                    <p style="font-size: 0.875rem; color: #6b7280;">
+                        <strong>Privacy Note:</strong> Films above 50% VLT provide daytime privacy. At night with interior lights on, visibility from outside increases for all film types.
+                    </p>
+                </div>
+            </div>
+
+            <div id="filmCards"></div>
+        </div>
+
+        <!-- Step 4: Measurement -->
+        <div class="step" id="step4">
+            <button class="back-btn" onclick="goToStep(3)">← Back</button>
+            <h2>Do you have window measurements?</h2>
+            <p class="subtitle">We can provide free on-site measurement if needed</p>
+            <div class="grid grid-2">
+                <button class="btn" onclick="selectMeasurement(false)" style="padding: 2rem;">
+                    <div style="font-size: 2rem; margin-bottom: 0.5rem;">📏</div>
+                    <div style="font-weight: 600; color: #111827; margin-bottom: 0.5rem;">Yes, I have measurements</div>
+                    <div style="font-size: 0.875rem; color: #6b7280;">I know the total square footage of my windows</div>
+                </button>
+                <button class="btn" onclick="selectMeasurement(true)" style="padding: 2rem; border-color: #ff8c00; background-color: #fff7ed;">
+                    <div style="font-size: 2rem; margin-bottom: 0.5rem;">🏠</div>
+                    <div style="font-weight: 600; color: #111827; margin-bottom: 0.5rem;">Schedule site measurement</div>
+                    <div style="font-size: 0.875rem; color: #6b7280;">Free on-site measurement by our team</div>
+                    <div style="margin-top: 0.75rem; font-size: 0.75rem; color: #ff8c00; font-weight: 500;">✓ Recommended for accuracy</div>
+                </button>
+            </div>
+
+            <div class="info-box">
+                <p><strong>Note:</strong> High ceilings or special windows may have additional installation charges. Photos will help us provide accurate pricing.</p>
+            </div>
+        </div>
+
+        <!-- Step 5: Estimate -->
+        <div class="step" id="step5">
+            <button class="back-btn" onclick="goToStep(4)">← Back</button>
+            
+            <div class="estimate-box">
+                <div class="estimate-header">
+                    <span>🧮</span>
+                    <h2>Your Estimate</h2>
+                </div>
+                <div class="estimate-amount" id="estimateAmount">฿---</div>
+                <div class="estimate-details" id="estimateDetails"></div>
+            </div>
+
+            <div id="areaInput"></div>
+
+            <div class="summary-box">
+                <h3 style="margin-bottom: 1rem;">Selected Configuration</h3>
+                <div class="summary-row">
+                    <span class="summary-label">Property Type</span>
+                    <span class="summary-value" id="summaryProperty">-</span>
+                </div>
+                <div class="summary-row">
+                    <span class="summary-label">Primary Focus</span>
+                    <span class="summary-value" id="summaryFocus">-</span>
+                </div>
+                <div class="summary-row">
+                    <span class="summary-label">Film Type</span>
+                    <span class="summary-value" id="summaryFilm">-</span>
+                </div>
+                <div class="summary-row">
+                    <span class="summary-label">Price per sq.ft</span>
+                    <span class="summary-value" id="summaryPrice">-</span>
+                </div>
+                <div class="summary-row" id="measurementRow" style="display: none;">
+                    <span class="summary-label">Measurement</span>
+                    <span class="summary-value" style="color: #ff8c00;">Site visit required</span>
+                </div>
+            </div>
+
+            <button class="btn-primary" onclick="goToStep(6)">Continue to Contact Details</button>
+        </div>
+
+        <!-- Step 6: Contact Form -->
+        <div class="step" id="step6">
+            <button class="back-btn" onclick="goToStep(5)">← Back</button>
+            
+            <h2>Almost done!</h2>
+            <p class="subtitle">Let us know how to reach you and about your installation</p>
+
+            <form id="contactForm" onsubmit="handleSubmit(event)">
+                <!-- Full Name -->
+                <div class="form-group">
+                    <label>Full Name <span class="required">*</span></label>
+                    <input type="text" id="name" placeholder="e.g., Somchai Saengchai" required>
+                    <div class="error-message" id="nameError"></div>
+                </div>
+
+                <!-- Phone Number -->
+                <div class="form-group">
+                    <label>Contact Number <span class="required">*</span></label>
+                    <input type="text" id="phone" placeholder="+66 92-006-8100" required>
+                    <div class="error-message" id="phoneError"></div>
+                </div>
+
+                <!-- Location -->
+                <div class="form-group">
+                    <label>Installation Location <span class="required">*</span></label>
+                    <input type="text" id="location" placeholder="e.g., Sukhumvit Soi 21, Bangkok" required>
+                    <div class="error-message" id="locationError"></div>
+                </div>
+
+                <!-- Measurements -->
+                <div class="form-group">
+                    <label>Window Measurements <span class="required" id="measurementRequired">*</span></label>
+                    <textarea id="measurements" placeholder="e.g., Living room: 10ft x 5ft (2 windows), Bedroom: 8ft x 4ft (1 window)"></textarea>
+                    <p style="font-size: 0.75rem; color: #9ca3af; margin-top: 0.5rem;" id="measurementHint"></p>
+                    <div class="error-message" id="measurementError"></div>
+                </div>
+
+                <!-- Photos -->
+                <div class="form-group">
+                    <label>Photos of Installation Area <span class="required">*</span></label>
+                    <div class="upload-area" onclick="document.getElementById('photoInput').click()">
+                        <div class="upload-icon">📤</div>
+                        <div class="upload-text">Click to upload photos</div>
+                        <div class="upload-hint">PNG, JPG up to 10MB each</div>
+                    </div>
+                    <input type="file" id="photoInput" accept="image/*" multiple onchange="handlePhotoUpload(event)">
+                    <div id="photoGrid"></div>
+                    <p style="font-size: 0.75rem; color: #9ca3af; margin-top: 0.5rem;">Please include photos showing the windows, ceiling height, and room layout</p>
+                    <div class="error-message" id="photoError"></div>
+                </div>
+
+                <!-- Additional Notes -->
+                <div class="form-group">
+                    <label>Additional Notes (Optional)</label>
+                    <textarea id="notes" placeholder="Any special requirements, preferred dates, access instructions, etc."></textarea>
+                </div>
+
+                <button type="submit" class="btn-primary">Get My Quote</button>
+            </form>
+        </div>
+
+        <!-- Step 7: Success -->
+        <div class="step" id="step7">
+            <div class="success-container">
+                <div class="success-icon">✓</div>
+                <h2 class="success-title">Quote Request Submitted!</h2>
+                <p class="success-message">
+                    Thank you for choosing JaiDeeClear. Our team will review your request and contact you shortly with a detailed quotation.
+                </p>
+
+                <div id="successEstimate"></div>
+
+                <div class="contact-cards">
+                    <div class="contact-card">
+                        <span class="contact-icon">📞</span>
+                        <span class="contact-text">+66 92-006-8100</span>
+                    </div>
+                    <div class="contact-card">
+                        <span class="contact-icon">💬</span>
+                        <span class="contact-text">@jaideeclear</span>
+                    </div>
+                    <div class="contact-card">
+                        <span class="contact-icon">📧</span>
+                        <span class="contact-text">jaideeclear@gmail.com</span>
+                    </div>
+                </div>
+
+                <button class="back-btn" onclick="resetForm()" style="margin-top: 2rem;">Start New Quote</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-container">
+            <div class="footer-badges">
+                <div class="footer-badge">🛡️ ISO 9001 Certified</div>
+                <div class="footer-badge">✨ IWFA Member</div>
+                <div class="footer-badge">✓ Professional Installation</div>
+            </div>
+            <p class="footer-text">© 2025 JaiDeeClear. On-site service throughout Bangkok.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Data
+        const films = [
+            {
+                id: 'carbon',
+                name: 'Carbon Series',
+                price: 50,
+                warranty: '2-3 years',
+                bestFor: 'Budget-conscious homeowners',
+                commonlyUsedFor: 'Small residential windows, rental properties, temporary solutions',
+                features: ['Basic UV protection', 'Moderate heat reduction', 'Cost-effective entry point'],
+                specs: { uvr: '95%', irr: '35%', tser: '40%' },
+                popular: false
+            },
+            {
+                id: 'metallic',
+                name: 'Metallic Series',
+                price: 75,
+                warranty: '2-3 years',
+                bestFor: 'Privacy seekers on a budget',
+                commonlyUsedFor: 'Street-facing windows, bathrooms, ground floor spaces',
+                features: ['Enhanced privacy', 'Better heat rejection', 'Reflective finish'],
+                specs: { uvr: '99%', irr: '45%', tser: '50%' },
+                popular: false
+            },
+            {
+                id: 'ceramic-nano',
+                name: 'Ceramic Nano',
+                price: 90,
+                warranty: '5-7 years',
+                bestFor: 'Modern homes and condos',
+                commonlyUsedFor: 'Living rooms, bedrooms, home offices with WiFi concerns',
+                features: ['Superior heat rejection', 'Non-metallic (WiFi friendly)', 'Crystal clear visibility'],
+                specs: { uvr: '99%', irr: '65%', tser: '60%' },
+                popular: true
+            },
+            {
+                id: 'ceramic-uv400',
+                name: 'Ceramic UV400',
+                price: 110,
+                warranty: '7-9 years',
+                bestFor: 'Health-conscious families',
+                commonlyUsedFor: 'Homes with children, art collections, premium furniture protection',
+                features: ['Maximum UV400 protection', 'Excellent optical clarity', 'Long-term durability'],
+                specs: { uvr: '99.9%', irr: '70%', tser: '65%' },
+                popular: false
+            },
+            {
+                id: 'titanium',
+                name: 'Titanium Series',
+                price: 130,
+                warranty: '7-9 years',
+                bestFor: 'Luxury residences and offices',
+                commonlyUsedFor: 'High-rise condos, executive offices, premium commercial spaces',
+                features: ['Premium performance', 'Enhanced durability', 'Professional aesthetic'],
+                specs: { uvr: '99.9%', irr: '75%', tser: '70%' },
+                popular: false
+            },
+            {
+                id: 'sputtering',
+                name: 'Sputtering Series',
+                price: 155,
+                warranty: '9 years',
+                bestFor: 'Ultimate performance seekers',
+                commonlyUsedFor: 'Penthouse suites, large glass facades, extreme heat locations',
+                features: ['Top-tier heat rejection', 'Maximum energy savings', 'Longest warranty'],
+                specs: { uvr: '99.9%', irr: '85%', tser: '80%' },
+                popular: false
+            }
+        ];
+
+        const propertyTypes = [
+            { value: 'House', icon: '🏠', label: 'House' },
+            { value: 'Condo', icon: '🏢', label: 'Condo' },
+            { value: 'Villa', icon: '🏰', label: 'Villa' },
+            { value: 'Townhouse', icon: '🏘️', label: 'Townhouse' },
+            { value: 'Office', icon: '💼', label: 'Office' },
+            { value: 'Shop', icon: '🏪', label: 'Shop' },
+            { value: 'Cafe', icon: '☕', label: 'Cafe/Restaurant' },
+            { value: 'Other', icon: '🏗️', label: 'Other' }
+        ];
+
+        const focusOptions = [
+            { value: 'heat', label: 'Heat Reduction', icon: '☀️', desc: 'Lower cooling costs & temperature' },
+            { value: 'privacy', label: 'Privacy', icon: '👁️', desc: 'Block outside view during daytime' },
+            { value: 'uv', label: 'UV Protection', icon: '🛡️', desc: 'Protect furniture & skin health' },
+            { value: 'both', label: 'Heat + Privacy', icon: '✨', desc: 'Comprehensive protection' }
+        ];
+
+        // State
+        let state = {
+            currentStep: 1,
+            propertyType: '',
+            focus: '',
+            selectedFilm: null,
+            area: '',
+            needsMeasurement: null,
+            photos: [],
+            formData: {
+                name: '',
+                phone: '',
+                location: '',
+                measurements: '',
+                notes: ''
+            }
+        };
+
+        // Initialize
+        function init() {
+            renderPropertyTypes();
+            renderFocusOptions();
+            updateProgressBar();
+        }
+
+        // Property Types
+        function renderPropertyTypes() {
+            const container = document.getElementById('propertyTypes');
+            container.innerHTML = propertyTypes.map(type => `
+                <button class="btn" onclick="selectProperty('${type.value}')" style="padding: 1.5rem;">
+                    <div style="font-size: 2rem; margin-bottom: 0.5rem;">${type.icon}</div>
+                    <div style="font-weight: 500; color: #111827; font-size: 0.875rem;">${type.label}</div>
+                </button>
+            `).join('');
+        }
+
+        function selectProperty(type) {
+            state.propertyType = type;
+            goToStep(2);
+        }
+
+        // Focus Options
+        function renderFocusOptions() {
+            const container = document.getElementById('focusOptions');
+            container.innerHTML = focusOptions.map(option => `
+                <button class="btn" onclick="selectFocus('${option.value}')" style="padding: 1.5rem;">
+                    <div style="font-size: 2rem; margin-bottom: 0.5rem;">${option.icon}</div>
+                    <div style="font-weight: 600; color: #111827; margin-bottom: 0.25rem;">${option.label}</div>
+                    <div style="font-size: 0.875rem; color: #6b7280;">${option.desc}</div>
+                </button>
+            `).join('');
+        }
+
+        function selectFocus(focus) {
+            state.focus = focus;
+            goToStep(3);
+        }
+
+        // Film Selector
+        function renderFilms() {
+            const container = document.getElementById('filmCards');
+            container.innerHTML = films.map(film => `
+                <div class="film-card ${film.popular ? 'popular' : ''}" style="margin-bottom: 1rem;">
+                    <div class="film-header">
+                        <div>
+                            <div class="film-name">${film.name}</div>
+                            <div class="film-warranty">Warranty: ${film.warranty}</div>
+                        </div>
+                        <div style="text-align: right; margin-left: auto;">
+                            <div class="film-price">฿${film.price}<span class="film-price-unit">/sq.ft</span></div>
+                        </div>
+                    </div>
+                    
+                    <div class="film-detail">
+                        <div class="film-detail-label">Best for:</div>
+                        <div>${film.bestFor}</div>
+                    </div>
+                    
+                    <div class="film-detail">
+                        <div class="film-detail-label">Commonly used for:</div>
+                        <div>${film.commonlyUsedFor}</div>
+                    </div>
+                    
+                    <div class="film-specs">
+                        <span>UVR: ${film.specs.uvr}</span>
+                        <span>IRR: ${film.specs.irr}</span>
+                        <span>TSER: ${film.specs.tser}</span>
+                    </div>
+                    
+                    <div class="film-buttons">
+                        <button class="btn" onclick="selectFilm('${film.id}')" style="background-color: #ff8c00; color: white; border: none; flex: 1;">
+                            Select This Film
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function selectFilm(filmId) {
+            state.selectedFilm = films.find(f => f.id === filmId);
+            goToStep(4);
+        }
+
+        function toggleGuidelines() {
+            const box = document.getElementById('guidelinesBox');
+            box.style.display = box.style.display === 'none' ? 'block' : 'none';
+        }
+
+        // Measurement
+        function selectMeasurement(needsMeasurement) {
+            state.needsMeasurement = needsMeasurement;
+            goToStep(5);
+        }
+
+        // Estimate
+        function renderEstimate() {
+            if (!state.needsMeasurement) {
+                const container = document.getElementById('areaInput');
+                container.innerHTML = `
+                    <div class="form-group">
+                        <label>Total Window Area (sq.ft) <span class="required">*</span></label>
+                        <input type="number" id="areaInput" value="${state.area}" onchange="updateArea(this.value)" placeholder="e.g., 150">
+                        <div style="font-size: 0.75rem; color: #9ca3af; margin-top: 0.5rem;">Enter the total square footage of all windows to be treated</div>
+                    </div>
+                `;
+            } else {
+                document.getElementById('areaInput').innerHTML = '';
+            }
+
+            updateEstimate();
+            updateSummary();
+        }
+
+        function updateArea(value) {
+            state.area = value;
+            updateEstimate();
+        }
+
+        function updateEstimate() {
+            if (state.selectedFilm && (state.needsMeasurement || state.area)) {
+                const total = state.selectedFilm.price * (parseFloat(state.area) || 0);
+                document.getElementById('estimateAmount').textContent = `฿${total.toLocaleString()}`;
+                document.getElementById('estimateDetails').textContent = 
+                    `${state.selectedFilm.name} • ${state.area || '---'} sq.ft`;
+            }
+        }
+
+        function updateSummary() {
+            document.getElementById('summaryProperty').textContent = state.propertyType;
+            document.getElementById('summaryFocus').textContent = state.focus;
+            document.getElementById('summaryFilm').textContent = state.selectedFilm?.name || '-';
+            document.getElementById('summaryPrice').textContent = `฿${state.selectedFilm?.price || '-'}`;
+            
+            const measurementRow = document.getElementById('measurementRow');
+            if (state.needsMeasurement) {
+                measurementRow.style.display = 'flex';
+            } else {
+                measurementRow.style.display = 'none';
+            }
+        }
+
+        // Contact Form
+        function renderContactForm() {
+            const hint = document.getElementById('measurementHint');
+            const required = document.getElementById('measurementRequired');
+            if (state.needsMeasurement) {
+                hint.textContent = 'Optional - Our team will measure on-site';
+                required.textContent = '';
+            } else {
+                hint.textContent = '';
+                required.textContent = '*';
+            }
+        }
+
+        function handlePhotoUpload(event) {
+            const files = Array.from(event.target.files);
+            files.forEach(file => {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    state.photos.push({
+                        name: file.name,
+                        data: e.target.result
+                    });
+                    renderPhotos();
+                };
+                reader.readAsDataURL(file);
+            });
+        }
+
+        function renderPhotos() {
+            const container = document.getElementById('photoGrid');
+            if (state.photos.length === 0) {
+                container.innerHTML = '';
+                return;
+            }
+            container.innerHTML = `
+                <div class="photo-grid">
+                    ${state.photos.map((photo, index) => `
+                        <div class="photo-item">
+                            <img src="${photo.data}" alt="Photo ${index + 1}">
+                            <button type="button" class="photo-delete" onclick="removePhoto(${index})">×</button>
+                        </div>
+                    `).join('')}
+                </div>
+            `;
+        }
+
+        function removePhoto(index) {
+            state.photos.splice(index, 1);
+            renderPhotos();
+        }
+
+        function handleSubmit(e) {
+            e.preventDefault();
+            
+            // Validate form
+            const errors = {};
+            const name = document.getElementById('name').value.trim();
+            const phone = document.getElementById('phone').value.trim();
+            const location = document.getElementById('location').value.trim();
+            const measurements = document.getElementById('measurements').value.trim();
+            
+            if (!name) errors.name = 'Full name is required';
+            if (!phone) errors.phone = 'Phone number is required';
+            if (!location) errors.location = 'Location is required';
+            if (!state.needsMeasurement && !measurements) errors.measurement = 'Measurements are required';
+            if (state.photos.length === 0) errors.photo = 'Please upload at least one photo';
+            
+            // Display errors
+            document.getElementById('nameError').textContent = errors.name || '';
+            document.getElementById('phoneError').textContent = errors.phone || '';
+            document.getElementById('locationError').textContent = errors.location || '';
+            document.getElementById('measurementError').textContent = errors.measurement || '';
+            document.getElementById('photoError').textContent = errors.photo || '';
+            
+            if (Object.keys(errors).length > 0) return;
+            
+            // Save form data
+            state.formData = {
+                name,
+                phone,
+                location,
+                measurements,
+                notes: document.getElementById('notes').value
+            };
+            
+            // Log submission
+            console.log('Form submitted:', state);
+            
+            // Go to success
+            goToStep(7);
+            renderSuccess();
+        }
+
+        function renderSuccess() {
+            const container = document.getElementById('successEstimate');
+            if (state.selectedFilm && (state.needsMeasurement || state.area)) {
+                const total = state.selectedFilm.price * (parseFloat(state.area) || 0);
+                container.innerHTML = `
+                    <div class="estimate-box" style="background: linear-gradient(to right, #ff8c00, #ffc107); margin-bottom: 2rem;">
+                        <div style="font-size: 0.875rem; color: rgba(255,255,255,0.9); margin-bottom: 0.5rem;">Estimated Total</div>
+                        <div style="font-size: 2.5rem; font-weight: bold; color: white; margin-bottom: 0.5rem;">฿${total.toLocaleString()}</div>
+                        <div style="font-size: 0.75rem; color: rgba(255,255,255,0.9);">
+                            ${state.selectedFilm.name} • ${state.area || '---'} sq.ft • ฿${state.selectedFilm.price}/sq.ft
+                        </div>
+                    </div>
+                `;
+            }
+        }
+
+        // Navigation
+        function goToStep(step) {
+            // Hide all steps
+            document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
+            
+            // Show selected step
+            document.getElementById(`step${step}`).classList.add('active');
+            state.currentStep = step;
+            
+            // Update progress
+            updateProgressBar();
+            
+            // Render step-specific content
+            if (step === 3) renderFilms();
+            if (step === 5) renderEstimate();
+            if (step === 6) renderContactForm();
+            
+            // Scroll to top
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function updateProgressBar() {
+            const bar = document.getElementById('progressBar');
+            bar.innerHTML = Array(6).fill(0).map((_, i) => `
+                <div class="progress-segment ${i < state.currentStep ? 'active' : ''}"></div>
+            `).join('');
+        }
+
+        function resetForm() {
+            state = {
+                currentStep: 1,
+                propertyType: '',
+                focus: '',
+                selectedFilm: null,
+                area: '',
+                needsMeasurement: null,
+                photos: [],
+                formData: {
+                    name: '',
+                    phone: '',
+                    location: '',
+                    measurements: '',
+                    notes: ''
+                }
+            };
+            
+            document.getElementById('contactForm').reset();
+            renderPhotos();
+            goToStep(1);
+        }
+
+        // Initialize on load
+        window.addEventListener('DOMContentLoaded', init);
+    </script>
+</body>
+</html>
