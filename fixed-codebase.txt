@@ -1,0 +1,709 @@
+import React, { useState, useEffect } from 'react';
+import { ChevronDown, ChevronRight, Check, Calculator, Phone, Mail, MessageCircle, Shield, Sparkles, ExternalLink, Upload, X } from 'lucide-react';
+
+export default function JaideeClearApp() {
+  const [step, setStep] = useState(1);
+  const [selectedFilm, setSelectedFilm] = useState(null);
+  const [showGuidelines, setShowGuidelines] = useState(false);
+  const [estimate, setEstimate] = useState({
+    propertyType: '',
+    area: '',
+    needsMeasurement: null,
+    focus: ''
+  });
+  const [calculatedCost, setCalculatedCost] = useState(null);
+  const [formData, setFormData] = useState({
+    name: '',
+    contact: '',
+    location: '',
+    measurements: '',
+    additionalNotes: '',
+    photos: []
+  });
+
+  const catalogLinks = {
+    'sputtering': 'https://online.fliphtml5.com/qacii/zzpb/',
+    'titanium': 'https://online.fliphtml5.com/qacii/uawk/',
+    'ceramic-uv400': 'https://online.fliphtml5.com/uuelh/egmo/#p=4',
+    'ceramic-nano': 'https://online.fliphtml5.com/qacii/cqfp/',
+    'metallic': 'https://online.fliphtml5.com/qacii/cpsf/',
+    'carbon': 'https://online.fliphtml5.com/uuelh/kasv/'
+  };
+
+  const films = [
+    {
+      id: 'carbon',
+      name: 'Carbon Series',
+      price: 50,
+      warranty: '2-3 years',
+      bestFor: 'Budget-conscious homeowners',
+      commonlyUsedFor: 'Small residential windows, rental properties, temporary solutions',
+      features: ['Basic UV protection', 'Moderate heat reduction', 'Cost-effective entry point'],
+      specs: { uvr: '95%', irr: '35%', tser: '40%' },
+      catalog: catalogLinks['carbon']
+    },
+    {
+      id: 'metallic',
+      name: 'Metallic Series',
+      price: 75,
+      warranty: '2-3 years',
+      bestFor: 'Privacy seekers on a budget',
+      commonlyUsedFor: 'Street-facing windows, bathrooms, ground floor spaces',
+      features: ['Enhanced privacy', 'Better heat rejection', 'Reflective finish'],
+      specs: { uvr: '99%', irr: '45%', tser: '50%' },
+      catalog: catalogLinks['metallic']
+    },
+    {
+      id: 'ceramic-nano',
+      name: 'Ceramic Nano',
+      price: 90,
+      warranty: '5-7 years',
+      bestFor: 'Modern homes and condos',
+      commonlyUsedFor: 'Living rooms, bedrooms, home offices with WiFi concerns',
+      features: ['Superior heat rejection', 'Non-metallic (WiFi friendly)', 'Crystal clear visibility'],
+      specs: { uvr: '99%', irr: '65%', tser: '60%' },
+      popular: true,
+      catalog: catalogLinks['ceramic-nano']
+    },
+    {
+      id: 'ceramic-uv400',
+      name: 'Ceramic UV400',
+      price: 110,
+      warranty: '7-9 years',
+      bestFor: 'Health-conscious families',
+      commonlyUsedFor: 'Homes with children, art collections, premium furniture protection',
+      features: ['Maximum UV400 protection', 'Excellent optical clarity', 'Long-term durability'],
+      specs: { uvr: '99.9%', irr: '70%', tser: '65%' },
+      catalog: catalogLinks['ceramic-uv400']
+    },
+    {
+      id: 'titanium',
+      name: 'Titanium Series',
+      price: 130,
+      warranty: '7-9 years',
+      bestFor: 'Luxury residences and offices',
+      commonlyUsedFor: 'High-rise condos, executive offices, premium commercial spaces',
+      features: ['Premium performance', 'Enhanced durability', 'Professional aesthetic'],
+      specs: { uvr: '99.9%', irr: '75%', tser: '70%' },
+      catalog: catalogLinks['titanium']
+    },
+    {
+      id: 'sputtering',
+      name: 'Sputtering Series',
+      price: 155,
+      warranty: '9 years',
+      bestFor: 'Ultimate performance seekers',
+      commonlyUsedFor: 'Penthouse suites, large glass facades, extreme heat locations',
+      features: ['Top-tier heat rejection', 'Maximum energy savings', 'Longest warranty'],
+      specs: { uvr: '99.9%', irr: '85%', tser: '80%' },
+      catalog: catalogLinks['sputtering']
+    }
+  ];
+
+  const safetyFilms = [
+    {
+      id: 'safety-04',
+      name: 'Safety Film 0.4mm',
+      price: 70,
+      bestFor: 'Basic glass protection',
+      commonlyUsedFor: 'Sliding doors, storefront windows, child-safe environments'
+    },
+    {
+      id: 'safety-08',
+      name: 'Safety Film 0.8mm',
+      price: 90,
+      bestFor: 'Enhanced security needs',
+      commonlyUsedFor: 'Ground floor windows, jewelry stores, high-value property'
+    },
+    {
+      id: 'safety-uv-04',
+      name: 'Safety UV Film 0.4mm',
+      price: 120,
+      bestFor: 'Protection + UV blocking',
+      commonlyUsedFor: 'Retail displays, museums, galleries with valuable items'
+    }
+  ];
+
+  const propertyTypes = [
+    { value: 'House', icon: '🏠', label: 'House' },
+    { value: 'Condo', icon: '🏢', label: 'Condo' },
+    { value: 'Villa', icon: '🏰', label: 'Villa' },
+    { value: 'Townhouse', icon: '🏘️', label: 'Townhouse' },
+    { value: 'Office', icon: '💼', label: 'Office' },
+    { value: 'Shop', icon: '🏪', label: 'Shop' },
+    { value: 'Cafe', icon: '☕', label: 'Cafe/Restaurant' },
+    { value: 'Other', icon: '🏗️', label: 'Other' }
+  ];
+
+  useEffect(() => {
+    if (selectedFilm && estimate.area) {
+      const basePrice = selectedFilm.price * parseFloat(estimate.area);
+      setCalculatedCost({
+        subtotal: basePrice,
+        total: basePrice,
+        pricePerSqFt: selectedFilm.price
+      });
+    }
+  }, [selectedFilm, estimate.area]);
+
+  const handlePhotoUpload = (e) => {
+    const files = Array.from(e.target.files);
+    const newPhotos = files.map(file => ({
+      file,
+      preview: URL.createObjectURL(file),
+      name: file.name
+    }));
+    setFormData({
+      ...formData,
+      photos: [...formData.photos, ...newPhotos]
+    });
+  };
+
+  const removePhoto = (index) => {
+    const newPhotos = formData.photos.filter((_, i) => i !== index);
+    setFormData({ ...formData, photos: newPhotos });
+  };
+
+  const PropertyTypeSelector = () => (
+    <div className="space-y-4">
+      <h2 className="text-3xl font-light text-gray-900 mb-2">What type of property?</h2>
+      <p className="text-gray-500 mb-8">This helps us recommend the best film for your needs</p>
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+        {propertyTypes.map((type) => (
+          <button
+            key={type.value}
+            onClick={() => {
+              setEstimate({ ...estimate, propertyType: type.value });
+              setStep(2);
+            }}
+            className="p-6 border-2 border-gray-200 rounded-2xl hover:border-[#FFA500] hover:bg-orange-50 transition-all text-center"
+          >
+            <div className="text-4xl mb-2">{type.icon}</div>
+            <div className="font-medium text-gray-900 text-sm">{type.label}</div>
+          </button>
+        ))}
+      </div>
+    </div>
+  );
+
+  const FocusSelector = () => (
+    <div className="space-y-4">
+      <button onClick={() => setStep(1)} className="text-[#FFA500] text-sm mb-4 flex items-center hover:underline">
+        ← Back
+      </button>
+      <h2 className="text-3xl font-light text-gray-900 mb-2">What's your main concern?</h2>
+      <p className="text-gray-500 mb-8">Select your primary need</p>
+      <div className="grid md:grid-cols-2 gap-4">
+        {[
+          { value: 'heat', label: 'Heat Reduction', icon: '☀️', desc: 'Lower cooling costs & temperature' },
+          { value: 'privacy', label: 'Privacy', icon: '👁️', desc: 'Block outside view during daytime' },
+          { value: 'uv', label: 'UV Protection', icon: '🛡️', desc: 'Protect furniture & skin health' },
+          { value: 'both', label: 'Heat + Privacy', icon: '✨', desc: 'Comprehensive protection' }
+        ].map((option) => (
+          <button
+            key={option.value}
+            onClick={() => {
+              setEstimate({ ...estimate, focus: option.value });
+              setStep(3);
+            }}
+            className="p-6 border-2 border-gray-200 rounded-2xl hover:border-[#FFA500] hover:bg-orange-50 transition-all text-left"
+          >
+            <div className="text-3xl mb-2">{option.icon}</div>
+            <div className="font-semibold text-gray-900 mb-1">{option.label}</div>
+            <div className="text-sm text-gray-600">{option.desc}</div>
+          </button>
+        ))}
+      </div>
+    </div>
+  );
+
+  const FilmSelector = () => {
+    const allFilms = [...films, ...safetyFilms];
+    
+    return (
+      <div className="space-y-6">
+        <button onClick={() => setStep(2)} className="text-orange-500 text-sm mb-4 flex items-center hover:underline">
+          ← Back
+        </button>
+        <div className="flex justify-between items-start mb-8">
+          <div>
+            <h2 className="text-3xl font-light text-gray-900 mb-2">Choose your film</h2>
+            <p className="text-gray-500">Select the protection level that fits your needs</p>
+          </div>
+          <button
+            onClick={() => setShowGuidelines(!showGuidelines)}
+            className="flex items-center space-x-2 text-orange-500 border border-orange-500 px-4 py-2 rounded-full hover:bg-orange-50 transition-all"
+          >
+            <span className="text-sm font-medium">Film Guidelines</span>
+            {showGuidelines ? <ChevronDown className="w-4 h-4" /> : <ChevronRight className="w-4 h-4" />}
+          </button>
+        </div>
+
+        {showGuidelines && (
+          <div className="bg-gray-50 rounded-2xl p-6 mb-8 space-y-4">
+            <div className="grid md:grid-cols-4 gap-4 text-sm">
+              <div>
+                <div className="font-bold text-[#FFA500] mb-1">VLT</div>
+                <div className="text-gray-600">Visible Light Transmit - Light passage amount</div>
+              </div>
+              <div>
+                <div className="font-bold text-[#FFA500] mb-1">UVR</div>
+                <div className="text-gray-600">UV Rejection - Harmful ray protection</div>
+              </div>
+              <div>
+                <div className="font-bold text-[#FFA500] mb-1">IRR</div>
+                <div className="text-gray-600">Infrared Rejection - Heat blocking power</div>
+              </div>
+              <div>
+                <div className="font-bold text-[#FFA500] mb-1">TSER</div>
+                <div className="text-gray-600">Total Solar Energy Rejection - Overall heat control</div>
+              </div>
+            </div>
+            <div className="pt-4 border-t border-gray-200">
+              <p className="text-sm text-gray-600">
+                <strong>Privacy Note:</strong> Films above 50% VLT provide daytime privacy. At night with interior lights on, visibility from outside increases for all film types.
+              </p>
+            </div>
+          </div>
+        )}
+
+        <div className="space-y-4">
+          {allFilms.map((film) => (
+            <div
+              key={film.id}
+              className={`p-6 border-2 rounded-2xl transition-all ${
+                film.popular ? 'border-orange-500 bg-orange-50' : 'border-gray-200'
+              } relative`}
+            >
+              {film.popular && (
+                <div className="absolute -top-3 left-6 bg-orange-500 text-white px-3 py-1 rounded-full text-xs font-semibold">
+                  Most Popular
+                </div>
+              )}
+              <div className="flex justify-between items-start">
+                <div className="flex-1">
+                  <div className="flex items-center space-x-3 mb-2">
+                    <h3 className="text-xl font-semibold text-gray-900">{film.name}</h3>
+                    <span className="text-2xl font-bold text-orange-600">฿{film.price}</span>
+                    <span className="text-sm text-gray-500">/sq.ft</span>
+                  </div>
+                  <div className="text-sm text-gray-600 mb-3">Warranty: {film.warranty}</div>
+                  <div className="mb-3">
+                    <div className="text-sm font-semibold text-gray-700 mb-1">Best for:</div>
+                    <div className="text-sm text-gray-600">{film.bestFor}</div>
+                  </div>
+                  <div className="mb-3">
+                    <div className="text-sm font-semibold text-gray-700 mb-1">Commonly used for:</div>
+                    <div className="text-sm text-gray-600">{film.commonlyUsedFor}</div>
+                  </div>
+                  {film.specs && (
+                    <div className="flex space-x-4 text-xs text-gray-500 mb-4">
+                      <span>UVR: {film.specs.uvr}</span>
+                      <span>IRR: {film.specs.irr}</span>
+                      <span>TSER: {film.specs.tser}</span>
+                    </div>
+                  )}
+                  <div className="flex space-x-3">
+                    <button
+                      onClick={() => {
+                        setSelectedFilm(film);
+                        setStep(4);
+                      }}
+                      className="px-6 py-2 bg-orange-500 text-white rounded-lg hover:bg-orange-600 transition-colors font-medium"
+                    >
+                      Select This Film
+                    </button>
+                    {film.catalog && (
+                      <a
+                        href={film.catalog}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="px-6 py-2 border-2 border-orange-500 text-orange-500 rounded-lg hover:bg-orange-50 transition-colors font-medium flex items-center space-x-2"
+                      >
+                        <span>View Catalog</span>
+                        <ExternalLink className="w-4 h-4" />
+                      </a>
+                    )}
+                  </div>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    );
+  };
+
+  const MeasurementStep = () => (
+    <div className="space-y-6">
+      <button onClick={() => setStep(3)} className="text-orange-500 text-sm mb-4 flex items-center hover:underline">
+        ← Back
+      </button>
+      <h2 className="text-3xl font-light text-gray-900 mb-2">Do you have window measurements?</h2>
+      <p className="text-gray-500 mb-8">We can provide free on-site measurement if needed</p>
+      
+      <div className="grid md:grid-cols-2 gap-6">
+        <button
+          onClick={() => {
+            setEstimate({ ...estimate, needsMeasurement: false });
+            setStep(5);
+          }}
+          className="p-8 border-2 border-gray-200 rounded-2xl hover:border-orange-500 hover:bg-orange-50 transition-all text-left"
+        >
+          <div className="text-3xl mb-4">📏</div>
+          <div className="font-semibold text-gray-900 text-lg mb-2">Yes, I have measurements</div>
+          <div className="text-sm text-gray-600">I know the total square footage of my windows</div>
+        </button>
+
+        <button
+          onClick={() => {
+            setEstimate({ ...estimate, needsMeasurement: true });
+            setStep(5);
+          }}
+          className="p-8 border-2 border-orange-500 bg-orange-50 rounded-2xl hover:bg-orange-100 transition-all text-left"
+        >
+          <div className="text-3xl mb-4">🏠</div>
+          <div className="font-semibold text-gray-900 text-lg mb-2">Schedule site measurement</div>
+          <div className="text-sm text-gray-600">Free on-site measurement by our team</div>
+          <div className="mt-3 text-xs text-orange-600 font-medium">✓ Recommended for accuracy</div>
+        </button>
+      </div>
+
+      <div className="bg-yellow-50 border-l-4 border-yellow-400 p-4 rounded">
+        <p className="text-sm text-yellow-800">
+          <strong>Note:</strong> High ceilings or special windows may have additional installation charges. Photos will help us provide accurate pricing.
+        </p>
+      </div>
+    </div>
+  );
+
+  const EstimateStep = () => (
+    <div className="space-y-6">
+      <button onClick={() => setStep(4)} className="text-orange-500 text-sm mb-4 flex items-center hover:underline">
+        ← Back
+      </button>
+      
+      <div className="bg-gradient-to-r from-orange-500 to-yellow-500 rounded-2xl p-8 text-white mb-8">
+        <div className="flex items-center space-x-3 mb-4">
+          <Calculator className="w-8 h-8" />
+          <h2 className="text-3xl font-light">Your Estimate</h2>
+        </div>
+        <div className="text-5xl font-bold mb-2">
+          {calculatedCost ? `฿${calculatedCost.total.toLocaleString()}` : '฿---'}
+        </div>
+        <div className="text-orange-100">
+          {selectedFilm?.name} • {estimate.area || '---'} sq.ft
+        </div>
+      </div>
+
+      {!estimate.needsMeasurement && (
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-2">Total Window Area (sq.ft) *</label>
+          <input
+            type="number"
+            value={estimate.area}
+            onChange={(e) => setEstimate({ ...estimate, area: e.target.value })}
+            placeholder="e.g., 150"
+            className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-orange-500 focus:outline-none text-lg"
+          />
+          <p className="text-xs text-gray-500 mt-1">Enter the total square footage of all windows to be treated</p>
+        </div>
+      )}
+
+      <div className="bg-gray-50 rounded-xl p-6 space-y-4">
+        <h3 className="font-semibold text-gray-900 mb-4">Selected Configuration</h3>
+        <div className="space-y-2 text-sm">
+          <div className="flex justify-between">
+            <span className="text-gray-600">Property Type</span>
+            <span className="font-medium text-gray-900">{estimate.propertyType}</span>
+          </div>
+          <div className="flex justify-between">
+            <span className="text-gray-600">Primary Focus</span>
+            <span className="font-medium text-gray-900 capitalize">{estimate.focus}</span>
+          </div>
+          <div className="flex justify-between">
+            <span className="text-gray-600">Film Type</span>
+            <span className="font-medium text-gray-900">{selectedFilm?.name}</span>
+          </div>
+          <div className="flex justify-between">
+            <span className="text-gray-600">Price per sq.ft</span>
+            <span className="font-medium text-gray-900">฿{selectedFilm?.price}</span>
+          </div>
+          {estimate.needsMeasurement && (
+            <div className="flex justify-between">
+              <span className="text-gray-600">Measurement</span>
+              <span className="font-medium text-orange-600">Site visit required</span>
+            </div>
+          )}
+        </div>
+      </div>
+
+      <button
+        onClick={() => setStep(6)}
+        disabled={!estimate.needsMeasurement && !estimate.area}
+        className="w-full bg-orange-500 text-white py-4 rounded-xl font-semibold text-lg hover:bg-orange-600 transition-colors disabled:bg-gray-300 disabled:cursor-not-allowed"
+      >
+        Continue to Contact Details
+      </button>
+    </div>
+  );
+
+  const ContactStep = () => (
+    <div className="space-y-6">
+      <button onClick={() => setStep(5)} className="text-orange-500 text-sm mb-4 flex items-center hover:underline">
+        ← Back
+      </button>
+      
+      <h2 className="text-3xl font-light text-gray-900 mb-2">Almost done!</h2>
+      <p className="text-gray-500 mb-8">Let us know how to reach you and about your installation</p>
+
+      <div className="space-y-4">
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-2">Full Name *</label>
+          <input
+            type="text"
+            value={formData.name}
+            onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+            placeholder="e.g., Somchai Saengchai"
+            className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-orange-500 focus:outline-none"
+          />
+        </div>
+
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-2">Contact Number *</label>
+          <input
+            type="text"
+            value={formData.contact}
+            onChange={(e) => setFormData({ ...formData, contact: e.target.value })}
+            placeholder="+66"
+            className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-orange-500 focus:outline-none"
+          />
+        </div>
+
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-2">Installation Location *</label>
+          <input
+            type="text"
+            value={formData.location}
+            onChange={(e) => setFormData({ ...formData, location: e.target.value })}
+            placeholder="e.g., Sukhumvit Soi 21, Bangkok"
+            className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-orange-500 focus:outline-none"
+          />
+        </div>
+
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-2">
+            Window Measurements {!estimate.needsMeasurement && '*'}
+          </label>
+          <textarea
+            value={formData.measurements}
+            onChange={(e) => setFormData({ ...formData, measurements: e.target.value })}
+            rows="3"
+            placeholder="e.g., Living room: 10ft x 5ft (2 windows), Bedroom: 8ft x 4ft (1 window)"
+            className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-orange-500 focus:outline-none"
+          />
+          {estimate.needsMeasurement && (
+            <p className="text-xs text-gray-500 mt-1">Optional - Our team will measure on-site</p>
+          )}
+        </div>
+
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-2">Photos of Installation Area *</label>
+          <div className="border-2 border-dashed border-gray-300 rounded-xl p-6 text-center">
+            <input
+              type="file"
+              accept="image/*"
+              multiple
+              onChange={handlePhotoUpload}
+              className="hidden"
+              id="photo-upload"
+            />
+            <label htmlFor="photo-upload" className="cursor-pointer">
+              <Upload className="w-12 h-12 text-gray-400 mx-auto mb-3" />
+              <p className="text-sm text-gray-600 mb-1">Click to upload photos</p>
+              <p className="text-xs text-gray-500">PNG, JPG up to 10MB each</p>
+            </label>
+          </div>
+          {formData.photos.length > 0 && (
+            <div className="grid grid-cols-3 gap-3 mt-4">
+              {formData.photos.map((photo, index) => (
+                <div key={index} className="relative group">
+                  <img
+                    src={photo.preview}
+                    alt={`Upload ${index + 1}`}
+                    className="w-full h-24 object-cover rounded-lg"
+                  />
+                  <button
+                    onClick={() => removePhoto(index)}
+                    className="absolute top-1 right-1 bg-red-500 text-white rounded-full p-1 opacity-0 group-hover:opacity-100 transition-opacity"
+                  >
+                    <X className="w-4 h-4" />
+                  </button>
+                </div>
+              ))}
+            </div>
+          )}
+          <p className="text-xs text-gray-500 mt-2">Please include photos showing the windows, ceiling height, and room layout</p>
+        </div>
+
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-2">Additional Notes (Optional)</label>
+          <textarea
+            value={formData.additionalNotes}
+            onChange={(e) => setFormData({ ...formData, additionalNotes: e.target.value })}
+            rows="4"
+            placeholder="Any special requirements, preferred dates, access instructions, etc."
+            className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-orange-500 focus:outline-none"
+          />
+        </div>
+      </div>
+
+      <button
+        onClick={() => setStep(7)}
+        disabled={!formData.name || !formData.contact || !formData.location || formData.photos.length === 0}
+        className="w-full bg-orange-500 text-white py-4 rounded-xl font-semibold text-lg hover:bg-orange-600 transition-colors disabled:bg-gray-300 disabled:cursor-not-allowed"
+      >
+        Get My Quote
+      </button>
+    </div>
+  );
+
+  const SuccessStep = () => (
+    <div className="text-center py-12">
+      <div className="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6">
+        <Check className="w-10 h-10 text-green-600" />
+      </div>
+      <h2 className="text-4xl font-light text-gray-900 mb-4">Quote Request Submitted!</h2>
+      <p className="text-gray-600 mb-8 max-w-md mx-auto">
+        Thank you for choosing JaiDeeClear. Our team will review your request and contact you shortly with a detailed quotation.
+      </p>
+
+      {calculatedCost && (
+        <div className="bg-orange-50 rounded-2xl p-6 max-w-md mx-auto mb-8">
+          <div className="text-sm text-gray-600 mb-2">Estimated Total</div>
+          <div className="text-4xl font-bold text-orange-600 mb-4">
+            ฿{calculatedCost.total.toLocaleString()}
+          </div>
+          <div className="text-xs text-gray-500">
+            {selectedFilm?.name} • {estimate.area} sq.ft • ฿{selectedFilm?.price}/sq.ft
+          </div>
+        </div>
+      )}
+
+      <div className="space-y-4 max-w-md mx-auto">
+        <div className="bg-white border-2 border-gray-200 rounded-xl p-4">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center space-x-3">
+              <Phone className="w-5 h-5 text-orange-500" />
+              <span className="font-medium">+66 92-006-8100</span>
+            </div>
+          </div>
+        </div>
+        <div className="bg-white border-2 border-gray-200 rounded-xl p-4">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center space-x-3">
+              <MessageCircle className="w-5 h-5 text-orange-500" />
+              <span className="font-medium">@jaideeclear</span>
+            </div>
+          </div>
+        </div>
+        <div className="bg-white border-2 border-gray-200 rounded-xl p-4">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center space-x-3">
+              <Mail className="w-5 h-5 text-orange-500" />
+              <span className="font-medium">jaideeclear@gmail.com</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <button
+        onClick={() => {
+          setStep(1);
+          setSelectedFilm(null);
+          setEstimate({ propertyType: '', area: '', needsMeasurement: null, focus: '' });
+          setFormData({ name: '', contact: '', location: '', measurements: '', additionalNotes: '', photos: [] });
+          setCalculatedCost(null);
+        }}
+        className="mt-8 text-orange-500 hover:underline"
+      >
+        Start New Quote
+      </button>
+    </div>
+  );
+
+  return (
+    <div className="min-h-screen bg-white">
+      {/* Header with Logo */}
+      <header className="border-b border-gray-100 sticky top-0 bg-white/80 backdrop-blur-lg z-50">
+        <div className="max-w-4xl mx-auto px-6 py-4 flex justify-between items-center">
+          <div className="flex items-center space-x-3">
+            <svg width="60" height="40" viewBox="0 0 240 120" className="flex-shrink-0">
+              <path d="M 20 40 Q 35 20, 50 40 Q 65 60, 80 40 L 80 80 Q 65 100, 50 80 Q 35 60, 20 80 Z" fill="#f0f0f0"/>
+              <path d="M 70 35 Q 85 15, 100 35 Q 115 55, 130 35 L 130 85 Q 115 105, 100 85 Q 85 65, 70 85 Z" fill="#d1d5db"/>
+              <path d="M 120 30 Q 135 10, 150 30 Q 165 50, 180 30 L 180 90 Q 165 110, 150 90 Q 135 70, 120 90 Z" fill="#9ca3af"/>
+              <path d="M 170 25 Q 185 5, 200 25 Q 215 45, 230 25 L 230 95 Q 215 115, 200 95 Q 185 75, 170 95 Z" fill="#FFA500"/>
+            </svg>
+            <div>
+              <div className="text-xl font-bold text-gray-900">
+                JAIDEE<span className="bg-black text-white px-1">CLEAR</span>
+              </div>
+              <div className="text-xs text-gray-700 font-medium tracking-wider">UV PROTECTION FILM</div>
+            </div>
+          </div>
+          <div className="text-sm text-orange-500 font-semibold">Starting at ฿40/sq.ft</div>
+        </div>
+      </header>
+
+      {/* Progress Indicator */}
+      {step < 7 && (
+        <div className="max-w-4xl mx-auto px-6 py-6">
+          <div className="flex items-center space-x-2">
+            {[1, 2, 3, 4, 5, 6].map((s) => (
+              <div
+                key={s}
+                className={`h-1 flex-1 rounded-full transition-all ${
+                  s <= step ? 'bg-orange-500' : 'bg-gray-200'
+                }`}
+              />
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* Main Content */}
+      <main className="max-w-4xl mx-auto px-6 py-12">
+        {step === 1 && <PropertyTypeSelector />}
+        {step === 2 && <FocusSelector />}
+        {step === 3 && <FilmSelector />}
+        {step === 4 && <MeasurementStep />}
+        {step === 5 && <EstimateStep />}
+        {step === 6 && <ContactStep />}
+        {step === 7 && <SuccessStep />}
+      </main>
+
+      {/* Footer */}
+      <footer className="border-t border-gray-100 mt-20">
+        <div className="max-w-4xl mx-auto px-6 py-12">
+          <div className="flex flex-wrap justify-center gap-6 text-sm text-gray-600 mb-8">
+            <div className="flex items-center space-x-2">
+              <Shield className="w-4 h-4" />
+              <span>ISO 9001 Certified</span>
+            </div>
+            <div className="flex items-center space-x-2">
+              <Sparkles className="w-4 h-4" />
+              <span>IWFA Member</span>
+            </div>
+            <div className="flex items-center space-x-2">
+              <Check className="w-4 h-4" />
+              <span>Professional Installation</span>
+            </div>
+          </div>
+          <p className="text-center text-xs text-gray-400">
+            © 2025 JaiDeeClear. On-site service throughout Bangkok.
+          </p>
+        </div>
+      </footer>
+    </div>
+  );
+}
